@@ -1,1 +1,5 @@
 # ignore files
+
+*.pdf
+*.bat
+.vscode
