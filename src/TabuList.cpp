@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "TabuList.h"
+#include "headers/TabuList.h"
 
 using std::vector;
 using std::deque;

@@ -4,7 +4,8 @@
 #include <list>
 #include <sstream>
 
-#include "Meta-Heuristics/TabuList.h"
+#include "headers/TabuList.h"
+#include "headers/Solution.h"
 
 std::map<std::string, std::list<int>> getTimesInput(std::string);
 std::list<int> extractData(std::string);

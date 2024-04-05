@@ -1,7 +1,7 @@
 #include <iostream>
 #include <deque>
 
-#include "../Solution.h"
+#include "Solution.h"
 
 
 class TabuList {

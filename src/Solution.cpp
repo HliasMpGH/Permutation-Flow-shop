@@ -1,7 +1,7 @@
-#include "Solution.h"
-#include "Meta-Heuristics/TabuList.h"
-#include "Searches.h"
-#include "Operators.h"
+#include "headers/Solution.h"
+#include "headers/TabuList.h"
+#include "headers/Searches.h"
+#include "headers/Operators.h"
 
 #include <math.h>
 
