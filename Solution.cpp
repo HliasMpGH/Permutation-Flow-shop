@@ -208,7 +208,7 @@ void Solution::performTabu(Operator op) {
     int end = 10;
 
     TabuList tabulist(7);
-    
+
     int current_iteration = 0;
     while (current_iteration++ != end) {
         std::cout << "iteration " << current_iteration << std::endl;
