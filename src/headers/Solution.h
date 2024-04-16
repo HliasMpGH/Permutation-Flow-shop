@@ -4,6 +4,9 @@
 #include <vector>
 #include <set>
 
+#include <map>
+#include <list>
+
 #include "Operators.h"
 #include "Searches.h"
 
@@ -11,6 +14,9 @@ class Solution {
     private:
         // the permutation of the solution
         std::vector<int> permutation;
+
+        // the cost map that this solution will consider
+        std::map<std::string, std::vector<int>> times;
 
         // returns all the unique swaps of solution
         std::set<Solution> getSwaps();
@@ -28,9 +34,9 @@ class Solution {
         void performSA(Operator op);
     public:
         // used to construct new solutions
-        Solution();
+        Solution(const std::map<std::string, std::vector<int>>&);
 
-        Solution(std::vector<int> permutation);
+        Solution(std::vector<int> permutation, const std::map<std::string, std::vector<int>>&);
 
         // used to retrieve the permutation of a solution
         std::vector<int> getPermutation() const;

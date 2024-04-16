@@ -3,23 +3,28 @@
 #include <regex>
 #include <list>
 #include <sstream>
+#include <map>
 
 #include "headers/TabuList.h"
 #include "headers/Solution.h"
 
-std::map<std::string, std::list<int>> getTimesInput(std::string);
-std::list<int> extractData(std::string);
+// map of the processing times of the problem
+std::map<std::string, std::vector<int>> processTimes;
+
+std::map<std::string, std::vector<int>> getTimesInput(std::string);
+std::vector<int> extractData(std::string);
 
 int main() {
     // modify accordingly
     std::string dataInputFile = "data.txt";
 
-    Solution sol1({1,2,3,4});
+    processTimes = getTimesInput(dataInputFile);
+
+    Solution sol1({1,2,3,4}, processTimes);
 
     //bool changed = sol1.improve(Search::TABU, Operator::SWAP);
 
-    std::map<std::string, std::list<int>> processTimes = getTimesInput(dataInputFile);
-
+    std::cout << Solution({1, 2, 3, 4}, processTimes).getCost();
     // use for validation
     for (const auto &pair : processTimes) {
         std::cout << "Key: " << pair.first << ", Value: ";
@@ -31,11 +36,11 @@ int main() {
 }
 
 
-std::map<std::string, std::list<int>> getTimesInput(std::string fileName) {
+std::map<std::string, std::vector<int>> getTimesInput(std::string fileName) {
     std::ifstream file(fileName);
     std::string dataLine;
 
-    std::map<std::string, std::list<int>> processTimes;
+    std::map<std::string, std::vector<int>> processTimes;
     if (file.is_open()) {
         while (file) {
             std::getline(file, dataLine);
@@ -66,8 +71,8 @@ std::map<std::string, std::list<int>> getTimesInput(std::string fileName) {
 }
 
 // extracts a list of ints from a string of process times
-std::list<int> extractData(std::string dataLine) {
-    std::list<int> times;
+std::vector<int> extractData(std::string dataLine) {
+    std::vector<int> times;
     std::istringstream iss(dataLine);
 
     int time;

@@ -4,13 +4,15 @@
 #include "headers/Operators.h"
 
 #include <math.h>
+#include <algorithm>
 
-Solution::Solution() {
-    // empty constructor
+Solution::Solution(const std::map<std::string, std::vector<int>>& times) {
+    this->times = times;
 }
 
-Solution::Solution(std::vector<int> permutation) {
+Solution::Solution(std::vector<int> permutation, const std::map<std::string, std::vector<int>>& times) {
     this->permutation = permutation;
+    this->times = times;
 }
 
 bool Solution::operator<(const Solution& other) const {
@@ -43,11 +45,28 @@ std::vector<int> Solution::getPermutation() const{
 }
 
 double Solution::getCost() const {
-    double cost = 0;
-    for (int var : this->getPermutation()) {
-        cost += var;
+    double maxTime = 0; // the makespan
+    std::map<std::string, double> machineTimes;
+    double jobTime;
+
+    for (const int job : this->getPermutation()) {
+        jobTime = 0;
+        for (const auto pair : this->times) {
+            double pTime = pair.second.at(job - 1);
+
+            // update the machine
+            machineTimes[pair.first] = std::max(jobTime, machineTimes[pair.first]) + pTime;
+
+            // update the job
+            jobTime = machineTimes[pair.first];
+
+            // update the makespan
+            if (jobTime > maxTime) {
+                maxTime = jobTime;
+            }
+        }
     }
-    return cost;
+    return jobTime;
 }
 
 void Solution::appendFeature(int solutionFeature) {
@@ -68,7 +87,7 @@ std::set<Solution> Solution::getSwaps() {
 
             std::swap(swappedPermutation[i], swappedPermutation[j]);
 
-            Solution neighbor(swappedPermutation);
+            Solution neighbor(swappedPermutation, this->times);
 
         //    std::cout << "cost:" << neighbor.getCost();
 
@@ -106,7 +125,7 @@ std::set<Solution> Solution::getRels() {
             // remove element from old position
             relocatedPermutation.erase(relocatedPermutation.begin() + relocatedPosition);
 
-            Solution neighbor(relocatedPermutation);
+            Solution neighbor(relocatedPermutation, this->times);
 
             relocations.insert(neighbor);
         }
