@@ -45,7 +45,6 @@ std::vector<int> Solution::getPermutation() const{
 }
 
 double Solution::getCost() const {
-    double maxTime = 0; // the makespan
     std::map<std::string, double> machineTimes;
     double jobTime;
 
@@ -59,11 +58,6 @@ double Solution::getCost() const {
 
             // update the job
             jobTime = machineTimes[pair.first];
-
-            // update the makespan
-            if (jobTime > maxTime) {
-                maxTime = jobTime;
-            }
         }
     }
     return jobTime;
@@ -166,7 +160,7 @@ bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
     }
 
     // the neighbor solution with the least cost
-    Solution bestNeighbor = *neighborhood.rbegin();
+    Solution bestNeighbor = *neighborhood.begin();
     std::cout << "move to ";
 
     for (int s : bestNeighbor.getPermutation()) {
@@ -230,6 +224,8 @@ void Solution::performTabu(Operator op) {
 
     int current_iteration = 0;
     while (current_iteration++ != end) {
+        // the solution we are currently iterating
+        Solution current_solution = *this;
         std::cout << "iteration " << current_iteration << std::endl;
         std::set<Solution> neighborhood = this->produceNeighborhood(op);
         std::set<Solution> filteredNeighborhood;
@@ -244,9 +240,9 @@ void Solution::performTabu(Operator op) {
             filteredNeighborhood.insert(neighbor);
         }
 
-        // if a move was made, taboo it
+        // if a move was made, taboo the previous solution
         if (this->move(filteredNeighborhood, Search::TABU)) {
-            tabulist.tabooMove(*this);
+            tabulist.tabooMove(current_solution);
 
             // record best solution
             if (*this < bestSolution) {
@@ -268,6 +264,9 @@ void Solution::performTabu(Operator op) {
         }
         std::cout << std::endl;
     }
+
+    // change this solution to the best solution found after the search
+    this->transformTo(bestSolution);
 }
 
 void Solution::performSA(Operator op) {
