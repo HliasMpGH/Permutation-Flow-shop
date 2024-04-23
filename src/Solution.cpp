@@ -63,8 +63,29 @@ double Solution::getCost() const {
     return jobTime;
 }
 
-void Solution::appendFeature(int solutionFeature) {
-    this->permutation.push_back(solutionFeature);
+void Solution::placeFeature(int position, int solutionFeature) {
+    this->permutation.insert(permutation.begin() + position, solutionFeature);
+}
+
+void Solution::removeFeature(int position) {
+    this->permutation.erase(permutation.begin() + position);
+}
+
+int Solution::getBestPosition(int job) {
+    int size = this->getPermutation().size();
+
+    // check all possible positions of job in solution and pick the best one
+    double minCost = INT_MAX;
+    int bestPos = 0;
+    for (int pos = 0; pos <= size; pos++) {
+        this->placeFeature(pos, job);
+        if (this->getCost() < minCost) {
+            minCost = this->getCost();
+            bestPos = pos;
+        }
+        this->removeFeature(pos);
+    }
+    return bestPos;
 }
 
 std::set<Solution> Solution::getSwaps() {
@@ -265,7 +286,7 @@ void Solution::performTabu(Operator op) {
         std::cout << std::endl;
     }
 
-    // change this solution to the best solution found after the search
+    // change this solution to the best solution found in the search
     this->transformTo(bestSolution);
 }
 

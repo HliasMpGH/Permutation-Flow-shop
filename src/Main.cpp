@@ -7,6 +7,8 @@
 
 #include "headers/TabuList.h"
 #include "headers/Solution.h"
+#include "headers/Heuristics.h"
+#include "headers/Analyzer.h"
 
 // map of the processing times of the problem
 std::map<std::string, std::vector<int>> processTimes;
@@ -20,21 +22,7 @@ int main() {
 
     processTimes = getTimesInput(dataInputFile);
 
-    Solution sol1({1,2,3,4}, processTimes);
-
-    //bool changed = sol1.improve(Search::TABU, Operator::SWAP);
-
-    std::cout << Solution({1, 2, 3, 4}, processTimes).getCost();
-    // use for validation
-    for (const auto &pair : processTimes) {
-        std::cout << "Key: " << pair.first << ", Value: ";
-        for (int s : pair.second) {
-            std::cout << s << "  ";
-        }
-        std::cout<< std::endl;
-    }
 }
-
 
 std::map<std::string, std::vector<int>> getTimesInput(std::string fileName) {
     std::ifstream file(fileName);

@@ -34,9 +34,9 @@ class Solution {
         void performSA(Operator op);
     public:
         // used to construct new solutions
-        Solution(const std::map<std::string, std::vector<int>>&);
+        Solution(const std::map<std::string, std::vector<int>> &times);
 
-        Solution(std::vector<int> permutation, const std::map<std::string, std::vector<int>>&);
+        Solution(std::vector<int> permutation, const std::map<std::string, std::vector<int>> &times);
 
         // used to retrieve the permutation of a solution
         std::vector<int> getPermutation() const;
@@ -44,8 +44,14 @@ class Solution {
         // used to calculate and return the cost of a solution
         double getCost() const;
 
-        // adds a solution feature to this solution
-        void appendFeature(int);
+        // places a solution feature to a certain position of this solution
+        void placeFeature(int position, int feature);
+
+        // removes a solution feature from a certain position of this solution
+        void removeFeature(int position);
+
+        // returns the best position of a job in this solution
+        int getBestPosition(int job);
 
         // produces the neighborhood of this solution
         // based on an LS operator
