@@ -24,6 +24,10 @@ bool Solution::operator<(const Solution& other) const {
     return this->getCost() < other.getCost();
 }
 
+bool Solution::operator>(const Solution& other) const {
+    return !(*this < other);
+}
+
 bool Solution::operator==(const Solution& other) const {
     std::vector<int> thisPermutation = this->getPermutation();
     std::vector<int> otherPermutation = other.getPermutation();
@@ -193,7 +197,7 @@ bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
     case Search::BASIC:
         // basic local search schema
 
-        if (bestNeighbor < *this) {
+        if (*this > bestNeighbor) {
             std::cout << "found better cost by "<<bestNeighbor.getPermutation()[0] << bestNeighbor.getPermutation()[1] << bestNeighbor.getPermutation()[2] << bestNeighbor.getPermutation()[3]<< " with cost " << bestNeighbor.getCost() << "\n";
             // if the neighbor is better than the current
             // solution, transform to neighbor
@@ -230,7 +234,13 @@ bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
 }
 
 void Solution::performBasic(Operator op) {
+    while (true) {
+        std::set<Solution> neighborhood = this->produceNeighborhood(op);
 
+        if (!this->move(neighborhood, Search::BASIC)) {
+            break;
+        }
+    }
 }
 
 void Solution::performTabu(Operator op) {

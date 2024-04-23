@@ -4,5 +4,5 @@
 
 class Analyzer {
     public:
-        void sens_analysis(std::map<std::string, std::vector<int>> times);
+        static void sens_analysis(std::map<std::string, std::vector<int>> times);
 };

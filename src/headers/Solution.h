@@ -67,5 +67,7 @@ class Solution {
         // operators
         bool operator<(const Solution& other) const;
 
+        bool operator>(const Solution& other) const;
+
         bool operator==(const Solution& other) const;
 };

@@ -6,7 +6,9 @@
 
 class Heuristics {
     public:
-        Solution neh(std::map<std::string, std::vector<int>>);
-        double getSumTime(std::map<std::string, std::vector<int>>, int);
-        std::vector<int> sortJobs(std::map<std::string, std::vector<int>>);
+        static Solution neh(std::map<std::string, std::vector<int>>);
+
+    private:
+        static double getSumTime(std::map<std::string, std::vector<int>>, int);
+        static std::vector<int> sortJobs(std::map<std::string, std::vector<int>>);
 };
