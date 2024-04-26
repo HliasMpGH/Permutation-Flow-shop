@@ -17,7 +17,6 @@ Solution::Solution(std::vector<int> permutation, const std::map<std::string, std
 
 bool Solution::operator<(const Solution& other) const {
     if (this->getCost() == other.getCost()) {
-        // if 2 solutions have the same cost, sort based
         return !(*this == other);
     }
 
@@ -175,10 +174,6 @@ void Solution::transformTo(Solution &other) {
 }
 
 bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
-    // find min solution in neighborhood
-    // make the move if less than getCost()
-    // true if it made the move
-
     if (neighborhood.size() == 0) {
         std::cout << "no more neighbors" << std::endl;
         return false;
@@ -186,11 +181,6 @@ bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
 
     // the neighbor solution with the least cost
     Solution bestNeighbor = *neighborhood.begin();
-    std::cout << "move to ";
-
-    for (int s : bestNeighbor.getPermutation()) {
-        std::cout << s << " ";
-    }
 
     std::cout << "cost: " << bestNeighbor.getCost() << std::endl;
     switch (searchType) {
@@ -198,7 +188,6 @@ bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
         // basic local search schema
 
         if (*this > bestNeighbor) {
-            std::cout << "found better cost by "<<bestNeighbor.getPermutation()[0] << bestNeighbor.getPermutation()[1] << bestNeighbor.getPermutation()[2] << bestNeighbor.getPermutation()[3]<< " with cost " << bestNeighbor.getCost() << "\n";
             // if the neighbor is better than the current
             // solution, transform to neighbor
             this->transformTo(bestNeighbor);
@@ -214,19 +203,8 @@ bool Solution::move(std::set<Solution> neighborhood, Search searchType) {
 
         return true; // a move will always be possible
     case Search::ANNEALING:
-        // Simulated Annealing
+        // Simulated Annealing - currently unsupported
 
-        if (bestNeighbor < *this) {
-            this->transformTo(bestNeighbor);
-            return true;
-        }
-
-        // calculate θt
-        double th;
-
-        double prob = pow(10, -(bestNeighbor.getCost() - this->getCost()) / th);
-
-        // make the move depending on probability
         break;
     }
 
@@ -280,24 +258,12 @@ void Solution::performTabu(Operator op) {
                 bestSolution = *this;
             }
         }
-
-        std::cout << "taboos: " << std::endl;
-        for (Solution cont : tabulist.getTaboos()) {
-            for (int s : cont.getPermutation()) {
-                std::cout << "\t" << s << " ";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << "BEST SO FAR: ";
-
-        for (int cont : bestSolution.getPermutation()) {
-            std::cout << cont;
-        }
-        std::cout << std::endl;
     }
 
     // change this solution to the best solution found in the search
-    this->transformTo(bestSolution);
+    if (!(*this == bestSolution)) {
+        this->transformTo(bestSolution);
+    }
 }
 
 void Solution::performSA(Operator op) {
@@ -306,10 +272,6 @@ void Solution::performSA(Operator op) {
 
 bool Solution::improve(Search searchType, Operator op) {
     Solution oldSolution = *this;
-
-    //Solution sol({1,2,3,4});
-    //this->transformTo(sol);
-
 
     switch (searchType) {
     case Search::BASIC:

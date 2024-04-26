@@ -4,4 +4,8 @@
 *.bat
 *.exe
 *.xlsx
+*.csv
 .vscode
+
+Analyzer.*
+

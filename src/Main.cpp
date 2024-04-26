@@ -8,7 +8,6 @@
 #include "headers/TabuList.h"
 #include "headers/Solution.h"
 #include "headers/Heuristics.h"
-#include "headers/Analyzer.h"
 
 // map of the processing times of the problem
 std::map<std::string, std::vector<int>> processTimes;
