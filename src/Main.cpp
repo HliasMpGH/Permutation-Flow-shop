@@ -21,6 +21,13 @@ int main() {
 
     processTimes = getTimesInput(dataInputFile);
 
+    Solution startSolution = Heuristics::neh(processTimes);
+
+    std::cout << "starting solution: " << startSolution.getCost() << std::endl;
+
+    startSolution.improve(Search::TABU, Operator::RELOC);
+
+    std::cout << std::endl << startSolution.getCost();
 }
 
 std::map<std::string, std::vector<int>> getTimesInput(std::string fileName) {
